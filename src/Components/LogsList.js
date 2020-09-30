@@ -20,6 +20,7 @@ const LogsList = function ({ fetchLogs, isTimerActive, setFetchLogs }) {
             method: 'POST',
             headers: {
                'Content-Type': 'application/json',
+               Accept: 'application/json',
             },
             body: JSON.stringify({
                logType: 'start',
@@ -40,20 +41,26 @@ const LogsList = function ({ fetchLogs, isTimerActive, setFetchLogs }) {
       // if isTimerActive === false
       // make a PUT request to update the current log
       if (fetchLogs && !isTimerActive) {
-         fetch(`https://sunmoon-logger.herokuapp.com/${currentLog._id}`, {
-            method: 'PUT',
-            headers: {
-               'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-               logType: 'stop',
-               timestamp: getTimestamp(),
-            }),
-         })
+         fetch(
+            `https://sunmoon-logger.herokuapp.com/api/logs/${currentLog._id}`,
+            {
+               method: 'PUT',
+               headers: {
+                  'Content-Type': 'application/json',
+                  Accept: 'application/json',
+               },
+               body: JSON.stringify({
+                  logType: 'stop',
+                  timestamp: getTimestamp(),
+               }),
+            }
+         )
             .then((res) => {
+               console.log(res);
                return res.json();
             })
             .then((data) => {
+               console.log(data);
                // set currentLog == newly created log
                // set fetchlogs == false
                setCurrentLog(data.updatedLog);
