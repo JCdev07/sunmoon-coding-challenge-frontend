@@ -1,8 +1,14 @@
 import React, { useEffect, useContext } from 'react';
 import { LogsContext } from '../Context/LogsContext';
 import { CurrentLogContext } from '../Context/CurrentLogProvider';
+import LoadingOverlay from 'react-loading-overlay';
 
-const LogsList = function ({ fetchLogs, isTimerActive, setFetchLogs }) {
+const LogsList = function ({
+   fetchLogs,
+   isTimerActive,
+   setFetchLogs,
+   isLoading,
+}) {
    // Initialize logs state from context
    const [logs, setLogs] = useContext(LogsContext);
 
@@ -73,6 +79,10 @@ const LogsList = function ({ fetchLogs, isTimerActive, setFetchLogs }) {
       };
    }, [isTimerActive]);
 
+   const displayLogs = logs.map((log) => {
+      return <li key={log.timestamp}>{`${log.timestamp} ${log.logType}`}</li>;
+   });
+
    // Generate Timestamp @ format "2019-10-17 07:45:08"
    const getTimestamp = () => {
       const startDate = new Date();
@@ -86,15 +96,13 @@ const LogsList = function ({ fetchLogs, isTimerActive, setFetchLogs }) {
          <div className='row'>
             <div className='col-6'>
                <h1>Logs</h1>
-               <ul>
-                  {logs.map((log) => {
-                     return (
-                        <li
-                           key={log.timestamp}
-                        >{`${log.timestamp} ${log.logType}`}</li>
-                     );
-                  })}
-               </ul>
+               <LoadingOverlay
+                  active={isLoading}
+                  spinner={false}
+                  text='Loading Logs...'
+               >
+                  <ul>{displayLogs}</ul>
+               </LoadingOverlay>
             </div>
          </div>
       </div>

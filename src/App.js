@@ -10,14 +10,17 @@ function App() {
    const [logs, setLogs] = useState([]);
    const [isTimerActive, setIsTimerActive] = useState(false);
    const [fetchLogs, setFetchLogs] = useState(false);
+   const [isLoading, setIsLoading] = useState(false);
 
    // Only Fetch all logs when isTimerActive state is Changed
    // Store it in 'logs' variable
    useMemo(() => {
+      setIsLoading(true);
       fetch('https://sunmoon-logger.herokuapp.com/api/logs')
          .then((res) => res.json())
          .then(({ data }) => {
             setLogs(data);
+            setIsLoading(false);
          });
    }, [isTimerActive]);
 
@@ -36,6 +39,7 @@ function App() {
                      fetchLogs={fetchLogs}
                      isTimerActive={isTimerActive}
                      setFetchLogs={setFetchLogs}
+                     isLoading={isLoading}
                   />
                </TimerProvider>
             </CurrentLogProvider>
