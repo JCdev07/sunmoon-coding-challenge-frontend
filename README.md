@@ -4,7 +4,7 @@
 
 `npm install`
 
-### Install all dependencies
+### To run the app
 
 `npm start`
 
