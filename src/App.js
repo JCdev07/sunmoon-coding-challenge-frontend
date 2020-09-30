@@ -14,7 +14,7 @@ function App() {
    // Only Fetch all logs when isTimerActive state is Changed
    // Store it in 'logs' variable
    useMemo(() => {
-      fetch('http://localhost:5000/api/logs')
+      fetch('https://sunmoon-logger.herokuapp.com/api/logs')
          .then((res) => res.json())
          .then(({ data }) => {
             setLogs(data);

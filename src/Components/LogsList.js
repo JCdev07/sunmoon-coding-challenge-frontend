@@ -16,7 +16,7 @@ const LogsList = function ({ fetchLogs, isTimerActive, setFetchLogs }) {
       // if isTimerActive === true
       // make a POST request to create new log
       if (fetchLogs && isTimerActive) {
-         fetch('http://localhost:5000/api/logs', {
+         fetch('https://sunmoon-logger.herokuapp.com/api/logs', {
             method: 'POST',
             headers: {
                'Content-Type': 'application/json',
@@ -40,7 +40,7 @@ const LogsList = function ({ fetchLogs, isTimerActive, setFetchLogs }) {
       // if isTimerActive === false
       // make a PUT request to update the current log
       if (fetchLogs && !isTimerActive) {
-         fetch(`http://localhost:5000/api/logs/${currentLog._id}`, {
+         fetch(`https://sunmoon-logger.herokuapp.com/${currentLog._id}`, {
             method: 'PUT',
             headers: {
                'Content-Type': 'application/json',
