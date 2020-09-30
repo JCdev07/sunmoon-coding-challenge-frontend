@@ -12,4 +12,4 @@
 
 -  Make sure to run the api first before running this frontend
 -  Link to API repo
-   `https://github.com/JCdev07/sunmoon-conding-challenge-api`
+   `https://github.com/JCdev07/sunmoon-coding-challenge-api`
