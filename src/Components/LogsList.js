@@ -1,22 +1,28 @@
 import React, { useEffect, useContext } from 'react';
 import { LogsContext } from '../Context/LogsContext';
+import { CurrentLogContext } from '../Context/CurrentLogProvider';
 
 const LogsList = function ({ fetchLogs, isTimerActive, setFetchLogs }) {
    // Initialize logs state from context
    const [logs, setLogs] = useContext(LogsContext);
 
-   // Create a new log using POST request
+   // Initialize current log Context
+   const [currentLog, setCurrentLog] = useContext(CurrentLogContext);
+
+   // Create a new log using POST request | Update Log using PUT request
    // Only run when isTimerActive state is changed
-   // isTimerActive - false when stop button clicked|true when start button clicked
+   // isTimerActive - 'false' when stop button clicked | 'true' when start button clicked
    useEffect(() => {
-      if (fetchLogs) {
+      // if isTimerActive === true
+      // make a POST request to create new log
+      if (fetchLogs && isTimerActive) {
          fetch('http://localhost:5000/api/logs', {
             method: 'POST',
             headers: {
                'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-               logType: isTimerActive ? 'start' : 'stop',
+               logType: 'start',
                timestamp: getTimestamp(),
             }),
          })
@@ -24,10 +30,40 @@ const LogsList = function ({ fetchLogs, isTimerActive, setFetchLogs }) {
                return res.json();
             })
             .then((data) => {
-               console.log(data);
+               // set currentLog == newly created log
+               // set fetchlogs == false
+               setCurrentLog(data.newLog);
                setFetchLogs(false);
             });
       }
+
+      // if isTimerActive === false
+      // make a PUT request to update the current log
+      if (fetchLogs && !isTimerActive) {
+         fetch(`http://localhost:5000/api/logs/${currentLog._id}`, {
+            method: 'PUT',
+            headers: {
+               'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+               logType: 'stop',
+               timestamp: getTimestamp(),
+            }),
+         })
+            .then((res) => {
+               return res.json();
+            })
+            .then((data) => {
+               // set currentLog == newly created log
+               // set fetchlogs == false
+               setCurrentLog(data.updatedLog);
+               setFetchLogs(false);
+            });
+      }
+
+      return () => {
+         setCurrentLog({});
+      };
    }, [isTimerActive]);
 
    // Generate Timestamp @ format "2019-10-17 07:45:08"

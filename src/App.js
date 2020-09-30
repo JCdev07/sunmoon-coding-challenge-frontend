@@ -3,6 +3,7 @@ import Stopwatch from './Components/Stopwatch';
 import { TimerProvider } from './Context/TimerProvider';
 import { LogsContext } from './Context/LogsContext';
 import LogsList from './Components/LogsList';
+import { CurrentLogProvider } from './Context/CurrentLogProvider';
 
 function App() {
    // Global States
@@ -23,19 +24,21 @@ function App() {
    return (
       <div className='App'>
          <LogsContext.Provider value={[logs, setLogs]}>
-            <TimerProvider>
-               <Stopwatch
-                  isTimerActive={isTimerActive}
-                  setIsTimerActive={setIsTimerActive}
-                  setFetchLogs={setFetchLogs}
-               />
+            <CurrentLogProvider>
+               <TimerProvider>
+                  <Stopwatch
+                     isTimerActive={isTimerActive}
+                     setIsTimerActive={setIsTimerActive}
+                     setFetchLogs={setFetchLogs}
+                  />
 
-               <LogsList
-                  fetchLogs={fetchLogs}
-                  isTimerActive={isTimerActive}
-                  setFetchLogs={setFetchLogs}
-               />
-            </TimerProvider>
+                  <LogsList
+                     fetchLogs={fetchLogs}
+                     isTimerActive={isTimerActive}
+                     setFetchLogs={setFetchLogs}
+                  />
+               </TimerProvider>
+            </CurrentLogProvider>
          </LogsContext.Provider>
       </div>
    );
